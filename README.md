@@ -138,7 +138,8 @@ http://127.0.0.1:8000
   - Maximum: 50
 - Enforced at API level using FastAPI validation
 ### Interactive Documentation
-FastAPI automatically generates API docs: http://127.0.0.1:8000/docs
+FastAPI automatically generates API docs:
+http://127.0.0.1:8000/docs
 ---
 ## 🖥 Frontend
 - Built using **Vanilla HTML, CSS, and JavaScript**
