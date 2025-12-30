@@ -97,9 +97,10 @@ Key operations performed using Pandas:
   - Explode into one-genre-per-row
 - Ensure deterministic ordering
 ### Step 3: Persist Clean Dataset
-The cleaned output is saved as: `data/cleaned_movies.csv`
+The cleaned output is saved as: `data/cleaned_movies.csv`. 
 
 This file becomes the **single source of truth** for analytics and APIs.
+
 ---
 ## 📊 Analytics Layer (`analytics.py`)
 This layer contains **pure Pandas functions** with no FastAPI or frontend dependencies.
@@ -138,8 +139,8 @@ http://127.0.0.1:8000
   - Maximum: 50
 - Enforced at API level using FastAPI validation
 ### Interactive Documentation
-FastAPI automatically generates API docs:
-http://127.0.0.1:8000/docs
+FastAPI automatically generates API docs: http://127.0.0.1:8000/docs
+
 ---
 ## 🖥 Frontend
 - Built using **Vanilla HTML, CSS, and JavaScript**
