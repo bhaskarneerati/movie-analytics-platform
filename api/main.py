@@ -1,3 +1,9 @@
+"""
+Main API Entry Point
+--------------------
+Initializes the FastAPI application, configures CORS, and registers 
+all versioned route routers.
+"""
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
@@ -12,6 +18,15 @@ logging.basicConfig(
 )
 
 def create_app() -> FastAPI:
+    """
+    Application factory for the Movie Analytics Platform.
+
+    This function initializes the FastAPI instance, configures global 
+    middlewares (CORS), and attaches the versioned API routers.
+
+    Returns:
+        FastAPI: A fully configured FastAPI application instance.
+    """
     app = FastAPI(
         title=settings.PROJECT_NAME,
         description="A professional Movie Analytics Platform REST API",
@@ -34,6 +49,12 @@ def create_app() -> FastAPI:
 
     @app.get("/", tags=["Health"])
     def health_check():
+        """
+        Public health check endpoint to verify API availability.
+
+        Returns:
+            dict: JSON object containing status and version information.
+        """
         return {
             "status": "online",
             "message": f"{settings.PROJECT_NAME} API is running",

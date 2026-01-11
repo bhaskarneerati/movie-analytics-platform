@@ -1,3 +1,9 @@
+"""
+Application Configuration
+-------------------------
+Centralized configuration management using Pydantic Settings. 
+Loads environment variables and defines global project constants.
+"""
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 

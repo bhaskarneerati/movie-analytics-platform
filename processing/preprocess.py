@@ -1,3 +1,10 @@
+"""
+Data Preprocessing Module
+-------------------------
+Handles the transformation of raw movie CSV data into a cleaned, 
+analytics-ready format. Includes logic for date parsing, numeric 
+normalization, and multi-genre explosion.
+"""
 import pandas as pd
 import logging
 from pathlib import Path
@@ -9,12 +16,41 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class MovieDataPreprocessor:
+    """
+    Handles the end-to-end data engineering pipeline for movie datasets.
+
+    This class provides methods to load raw CSV data, perform cleaning and 
+    normalization (including genre explosion), and persist the cleaned data 
+    for downstream analytics.
+
+    Attributes:
+        raw_path (Path): Path to the source raw CSV file.
+        output_path (Path): Path where the cleaned CSV will be saved.
+    """
+
     def __init__(self, raw_path: Path, output_path: Path):
+        """
+        Initializes the preprocessor with source and destination paths.
+
+        Args:
+            raw_path (Path): Absolute path to the raw input data.
+            output_path (Path): Absolute path for the cleaned output data.
+        """
         self.raw_path = raw_path
         self.output_path = output_path
 
     def load_data(self) -> pd.DataFrame:
-        """Loads raw movie dataset from CSV."""
+        """
+        Loads the raw movie dataset from the local filesystem.
+
+        Uses the Python engine for robust parsing of long text fields (e.g., overviews).
+
+        Returns:
+            pd.DataFrame: The raw dataset loaded as a Pandas DataFrame.
+
+        Raises:
+            FileNotFoundError: If no file exists at the specified raw_path.
+        """
         if not self.raw_path.exists():
             logger.error(f"Raw data file not found at {self.raw_path}")
             raise FileNotFoundError(f"Raw data file not found at {self.raw_path}")
@@ -28,7 +64,22 @@ class MovieDataPreprocessor:
         )
 
     def clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Performs data cleaning and normalization."""
+        """
+        Executes cleaning, type coercion, and normalization logic.
+
+        Operations include:
+        - Date parsing and handling missing dates.
+        - Numeric coercion for popularity and vote metrics.
+        - Normalizing categorical fields (Language, Genre).
+        - Exploding multi-valued genres into individual rows.
+        - Sorting records for deterministic output.
+
+        Args:
+            df (pd.DataFrame): The raw input DataFrame.
+
+        Returns:
+            pd.DataFrame: A cleaned and normalized DataFrame.
+        """
         logger.info("Starting data cleaning process...")
         df = df.copy()
 
@@ -72,13 +123,22 @@ class MovieDataPreprocessor:
         return df
 
     def save_data(self, df: pd.DataFrame) -> None:
-        """Persists cleaned dataset to disk."""
+        """
+        Persists the processed DataFrame to a CSV file.
+
+        Args:
+            df (pd.DataFrame): The cleaned DataFrame to save.
+        """
         logger.info(f"Saving cleaned data to {self.output_path}")
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
         df.to_csv(self.output_path, index=False)
 
     def run(self) -> None:
-        """Executes the full preprocessing pipeline."""
+        """
+        Orchestrates the full preprocessing pipeline.
+
+        Reads source -> Cleans -> Writes destination.
+        """
         try:
             raw_df = self.load_data()
             cleaned_df = self.clean_data(raw_df)

@@ -1,3 +1,9 @@
+"""
+API Data Schemas
+----------------
+Defines Pydantic models for request validation and structured API responses. 
+Ensures consistent data types across the network layer.
+"""
 from pydantic import BaseModel
 from typing import List
 
