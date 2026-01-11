@@ -1,40 +1,45 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import logging
 
+from api.core.config import settings
 from api.routes import router as movies_router
 
-
-app = FastAPI(
-    title="Movie Analytics Platform",
-    description="REST API for movie analytics using Pandas and FastAPI",
-    version="1.0.0",
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title=settings.PROJECT_NAME,
+        description="A professional Movie Analytics Platform REST API",
+        version=settings.VERSION,
+        docs_url="/docs",
+        redoc_url="/redoc",
+    )
 
-# -------------------------------------------------------------------
-# CORS Configuration
-# -------------------------------------------------------------------
+    # CORS Configuration
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.CORS_ORIGINS,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # tighten in production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    # Include Routers
+    app.include_router(movies_router, prefix=settings.API_V1_STR)
 
+    @app.get("/", tags=["Health"])
+    def health_check():
+        return {
+            "status": "online",
+            "message": f"{settings.PROJECT_NAME} API is running",
+            "version": settings.VERSION
+        }
 
-# -------------------------------------------------------------------
-# Routers
-# -------------------------------------------------------------------
+    return app
 
-app.include_router(movies_router)
-
-
-# -------------------------------------------------------------------
-# Health Check
-# -------------------------------------------------------------------
-
-@app.get("/")
-def health_check():
-    return {"status": "Movie Analytics API is running"}
+app = create_app()

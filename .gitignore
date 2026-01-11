@@ -1,0 +1,6 @@
+__pycache__/
+.venv/
+.env
+data/cleaned_movies.csv
+.DS_Store
+*.pyc

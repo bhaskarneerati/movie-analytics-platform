@@ -3,42 +3,45 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Movie Analytics Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Analytics | Premium Insights</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <h1>🎬 Movie Analytics Platform</h1>
+    <div class="container">
+        <header>
+            <h1>🎬 Movie Analytics</h1>
+            <p>Data-driven insights from the global cinema database</p>
+        </header>
 
-    <div class="controls">
-        <!-- <label for="limitInput">Number of movies (max 50, applicable only to Most Popular  & Top Rated Movies) :</label> -->
-        <!-- <input
-        type="number"
-        id="limitInput"
-        min="1"
-        max="50"
-        value="10"
-    /> -->
+        <section class="controls-section">
+            <div class="input-group" id="limit-input-group" style="display: none;">
+                <label for="limitInput">Movie Limit</label>
+                <small class="helper-text">Ranking depth (Max 50)</small>
+                <input type="number" id="limitInput" min="1" max="50" value="10" placeholder="Max 50">
+            </div>
 
-        <div class="input-group">
-            <label for="limitInput">Number of movies</label>
-            <small class="helper-text">
-                Max 50. Applicable only to Most Popular & Top Rated Movies.
-            </small>
+            <div class="button-group">
+                <button onclick="MovieUI.loadData('most-popular')" id="btn-popular">🚀 Popular</button>
+                <button onclick="MovieUI.loadData('top-rated')" id="btn-rated">⭐ Top Rated</button>
+                <button onclick="MovieUI.loadData('by-genre')" id="btn-genre">🎭 By Genre</button>
+                <button onclick="MovieUI.loadData('yearly-trends')" id="btn-trends">📅 Yearly Trends</button>
+                <button onclick="MovieUI.loadData('language-stats')" id="btn-language">🌐 Languages</button>
+            </div>
+        </section>
 
-            <input type="number" id="limitInput" min="1" max="50" value="10" />
-        </div>
-
-        <button onclick="loadMostPopular()">Most Popular Movies</button>
-        <button onclick="loadTopRated()">Top Rated Movies</button>
-
-        <button onclick="loadByGenre()">Average Rating by Genre</button>
-        <button onclick="loadYearlyTrends()">Movies per Year</button>
-        <button onclick="loadLanguageStats()">Movies by Language</button>
+        <main id="output">
+            <div class="empty-state">
+                <p>Select an analytics view to get started.</p>
+            </div>
+        </main>
     </div>
-
-    <div id="output"></div>
 
     <script src="script.js"></script>
 </body>
